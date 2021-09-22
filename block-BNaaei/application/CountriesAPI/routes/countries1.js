@@ -62,4 +62,50 @@ router.put('/addNeighbourCountry/:id', (req, res, next) => {
   });
 });
 
+// List countries based on religion
+router.get('/filter/religion', (req, res, next) => {
+  const { relgion } = req.body;
+  Country.find({ ethnicity: { $in: ['religion'] } }, (err, countries) => {
+    if (err) return next(err);
+    res.status(200).json({ countries });
+  });
+});
+
+// List countries based on  continents
+router.get('/filter/continent', (req, res, next) => {
+  const { continent } = req.body;
+  Country.find({ continent: continent }, (err, countries) => {
+    if (err) return next(err);
+    res.status(200).json({ countries });
+  });
+});
+
+// List countries based on  population
+router.get('/filter/population', (req, res, next) => {
+  const { minPopulation, maxPopulation } = req.body;
+  Country.find(
+    { population: { $gte: minPopulation, $lte: maxPopulation } },
+    (err, countries) => {
+      if (err) return next(err);
+      res.status(200).json({ countries });
+    }
+  );
+});
+
+// Adding a state
+router.post('/:id', (req, res, next) => {
+  var data = req.body;
+  var countryId = req.params.id;
+  State.create(data, (err, state) => {
+    if (err) return next(err);
+    Country.findByIdAndUpdate(
+      countryId,
+      { $push: { states: state._id } },
+      (err, country) => {
+        res.status(200).json({ state });
+      }
+    );
+  });
+});
+
 module.exports = router;

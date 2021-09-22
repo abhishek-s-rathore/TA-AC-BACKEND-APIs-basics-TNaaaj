@@ -14,22 +14,20 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
-// Adding a state
-router.post('/:id', (req, res, next) => {
-  var data = req.body;
-  var countryId = req.params.id;
-  State.create(data, (err, state) => {
+//Removing State form any country
+router.delete('/:id/removeState', (req, res, next) => {
+  let id = req.params.id;
+  States.findById(id, (err, state) => {
     if (err) return next(err);
-    Country.findByIdAndUpdate(
-      countryId,
-      { $push: { states: state._id } },
+    Countries.findByIdAndUpdate(
+      state.country,
+      { $pull: { neighbouring_states: id } },
       (err, country) => {
-        res.status(200).json({ state });
+        if (err) return next(err);
+        res.status(200).json({ country });
       }
     );
   });
 });
-
-//
 
 module.exports = router;
