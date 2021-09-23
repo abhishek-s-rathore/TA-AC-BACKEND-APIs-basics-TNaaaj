@@ -6,7 +6,7 @@ var stateSchema = new Schema(
     name: { type: String },
     area: { type: Number },
     population: { type: Number },
-    country: { type: mongoose.Schema.Types.ObjectId, ref: 'Country' },
+    state: { type: mongoose.Schema.Types.ObjectId, ref: 'Country' },
     neighbouring_states: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'State' },
     ],
@@ -14,4 +14,4 @@ var stateSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Country', stateSchema);
+module.exports = mongoose.model('State', stateSchema);
