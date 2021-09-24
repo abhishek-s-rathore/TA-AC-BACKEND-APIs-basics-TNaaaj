@@ -14,6 +14,16 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
+//Update State form any country
+router.put('/:id/updateState', (req, res, next) => {
+  var data = req.body;
+  let id = req.params.id;
+  States.findByIdAndUpdate(id, data, (err, state) => {
+    if (err) return next(err);
+    res.status(200).json({ state });
+  });
+});
+
 //Removing State form any country
 router.delete('/:id/removeState', (req, res, next) => {
   let id = req.params.id;
