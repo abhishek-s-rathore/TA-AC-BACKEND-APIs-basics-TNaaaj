@@ -62,6 +62,24 @@ router.put('/addNeighbourCountry/:id', (req, res, next) => {
   });
 });
 
+// List All Neighbouring countries
+router.get('/allNeighbouringCountries/:id', (req, res, next) => {
+  var id = req.params.id;
+  Country.findById(id, (err, country) => {
+    if (err) return next(err);
+    res.status(200).json({ neighbours: country.neighbouring_countries });
+  });
+});
+
+// List All religions of the country
+router.get('allReligions/:id', (req, res, next) => {
+  var id = req.params.id;
+  Country.findById(id, (err, country) => {
+    if (err) return next(err);
+    res.status(200).json({ religions: country.ethnicity });
+  });
+});
+
 // List countries based on religion
 router.get('/filter/religion', (req, res, next) => {
   const { relgion } = req.body;
